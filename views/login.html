@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jeu de Tic Tac Toe</title>
+    <!-- Tailwind CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      #game-board {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        grid-gap: 5px;
+      }
+      .grid-item {
+        width: 100px;
+        height: 100px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto mt-10 p-5 bg-blue-500 text-white rounded-lg">
+      <h1 class="text-2xl font-bold mb-4">Jeu de Tic Tac Toe</h1>
+      <div id="game-status" class="mb-4">
+        Tour du joueur : <span id="current-player">X</span>
+      </div>
+      <div id="game-board" class="mb-4">
+        <!-- Tic Tac Toe board will be generated here -->
+      </div>
+      <button
+        id="reset-button"
+        class="btn btn-primary mt-3 py-2 px-4 bg-blue-700 hover:bg-blue-800 text-white rounded"
+      >
+        Nouvelle Partie
+      </button>
+      <div id="scoreboard" class="mt-3">
+        <p>
+          Score : Joueur X - <span id="score-x">0</span> | Joueur O -
+          <span id="score-o">0</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal HTML -->
+    <div
+      id="gameModal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden"
+    >
+      <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+        <h3 class="text-xl font-semibold mb-4">Détails des Joueurs</h3>
+        <div id="modalContent" class="mb-4">
+          <!-- Content will be added dynamically -->
+        </div>
+        <button
+          id="closeModal"
+          class="py-2 px-4 bg-gray-600 hover:bg-gray-700 text-white rounded"
+        >
+          Fermer
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Open the modal
+      function openModal() {
+        document.getElementById("gameModal").classList.remove("hidden");
+      }
+
+      // Close the modal
+      document
+        .getElementById("closeModal")
+        .addEventListener("click", function () {
+          document.getElementById("gameModal").classList.add("hidden");
+        });
+
+      // Generate Tic Tac Toe board
+      function generateBoard() {
+        const board = document.getElementById("game-board");
+        board.innerHTML = "";
+        for (let i = 0; i < 9; i++) {
+          const cell = document.createElement("div");
+          cell.className = "grid-item";
+          cell.onclick = () => openModal(); // Open modal on cell click
+          board.appendChild(cell);
+        }
+      }
+
+      // Initialize the game board
+      generateBoard();
+    </script>
+  </body>
+</html>

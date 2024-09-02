@@ -1,0 +1,47 @@
+
+h1 {
+  margin-bottom: 20px;
+}
+
+#game-status {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+#game-board {
+  display: grid;
+  gap: 1px;
+  margin-bottom: 20px;
+}
+
+.cell {
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#reset-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#scoreboard {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.cell.X {
+  background-color: red;
+  color: white;
+  font-size: 12px;
+}
+.cell.O {
+  background-color: blue;
+  color: white;
+  font-size: 12px;
+}

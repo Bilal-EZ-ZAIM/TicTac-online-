@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe Game | MediaGame</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-sky-900 text-white h-[8vh] shadow-lg">
+      <div class="container px-4 mx-auto flex justify-between items-center">
+        <h1 class="text-2xl h-[8vh] font-bold hover:scale-110 h-full hover:text-gray-300 transition-transform duration-300">
+          Tic Tac Toe
+        </h1>
+        <nav class="flex w-max h-[8vh] items-center ">
+          <i
+            class="fa-solid fa-bars text-xl xd:hidden cursor-pointer transition-transform duration-300"
+            id="togel-bar"
+          ></i>
+          <ul
+            class="flex  xd:space-x-4 xs:flex-col xs:hidden xs:bg-sky-900 xs:w-[150px] xs:absolute xs:top-[8vh] xs:right-0 xs:p-2 xs:gap-3 transition-all duration-500 ease-in-out transform xs:translate-x-full"
+            id="nav-menu"
+          >
+            <li>
+              <a
+                href="#"
+                class="hover:text-gray-300 hover:scale-105 transition-transform duration-300"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-gray-300 hover:scale-105 transition-transform duration-300"
+                >Games</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-gray-300 hover:scale-105 transition-transform duration-300"
+                >Login</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-gray-300 hover:scale-105 transition-transform duration-300"
+                >Register</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main
+      class="container mx-auto my-8 p-4 h-[71.5vh] flex justify-center items-center"
+    >
+      <div class="flex flex-col md:flex-row justify-between items-center xs:justify-center">
+        <div class="md:w-2/4 xs:relative">
+          <h2 class="text-3xl font-semibold mb-4 xs:text-[18px] hover:text-sky-600 transition-colors duration-300">
+            Welcome to Tic Tac Toe!
+          </h2>
+          <p class="text-lg mb-4 xs:text-[16px] xs:mb-8">
+            Experience the classic Tic Tac Toe game with a twist! Our version of
+            Tic Tac Toe is played on a 20x20 grid, and the first player to align
+            5 symbols (either X or O) wins the game. Challenge your friends and
+            see who is the ultimate Tic Tac Toe master!
+          </p>
+          <a
+            href="game"
+            class="bg-sky-600 w-[150px] xs:text-[14px] xs:absolute xs:translate-x-[-50%] xs:top-[100%] xs:left-[50%] text-white py-2 px-4 rounded-lg shadow-lg hover:bg-sky-900 hover:scale-105 transition-all duration-300"
+            >Start a New Game</a
+          >
+        </div>
+        <div class="md:w-1/3 mt-8 md:mt-0 xs:hidden md:block">
+          <img
+            src="./image/Gaming-bro.png"
+            alt="Tic Tac Toe"
+            class="w-full rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-sky-900 text-white py-4 shadow-inner">
+      <div class="container mx-auto text-center">
+        <p>&copy; 2024 MediaGame. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            screens: {
+              xs: { max: "770px" },
+              xd: { min: "770px" },
+            },
+          },
+        },
+      };
+
+      const togelBar = document.getElementById("togel-bar");
+      const navMenu = document.getElementById("nav-menu");
+
+      togelBar.addEventListener("click", () => {
+        navMenu.classList.toggle("xs:hidden");
+        navMenu.classList.toggle("xs:translate-x-0");
+        navMenu.classList.toggle("xs:translate-x-full");
+        if (togelBar.classList.contains("fa-bars")) {
+          togelBar.classList.remove("fa-bars");
+          togelBar.classList.add("fa-xmark");
+        } else {
+          togelBar.classList.remove("fa-xmark");
+          togelBar.classList.add("fa-bars");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="game.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+
+    <style>
+      .online-users-container {
+        margin-top: 20px;
+      }
+
+      .challenges-container {
+        margin-top: 20px;
+      }
+
+      .form-group label {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .btn-custom {
+        background: #56baed;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+      }
+
+      .btn-custom:hover {
+        background: #4a9ad7;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="bg-sky-900 text-white h-[8vh] shadow-lg">
+      <div class="container px-4 mx-auto flex justify-between items-center">
+        <h1
+          class="text-2xl h-[8vh] font-bold hover:scale-110 h-full hover:text-gray-300 transition-transform duration-300"
+        >
+          Tic Tac Toe
+        </h1>
+        <nav class="flex w-max h-[8vh] items-center">
+          <i
+            class="fa-solid fa-bars text-xl xd:hidden cursor-pointer transition-transform duration-300"
+            id="togel-bar"
+          ></i>
+          <ul
+            class="flex z-50 xd:space-x-4 xs:flex-col xs:hidden xs:bg-sky-900 xs:w-[150px] xs:absolute xs:top-[8vh] xs:right-0 xs:p-2 xs:gap-3 transition-all duration-500 ease-in-out transform xs:translate-x-full"
+            id="nav-menu"
+          >
+            <li>
+              <a
+                href="#"
+                class="hover:text-gray-300 hover:scale-105 transition-transform duration-300"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-gray-300 hover:scale-105 transition-transform duration-300"
+                >Games</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-gray-300 hover:scale-105 transition-transform duration-300"
+                >Login</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="hover:text-gray-300 hover:scale-105 transition-transform duration-300"
+                >Register</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div
+      id="notification"
+      class="fixed top-10 z-40 right-4 max-w-xs w-[200px] flex flex-col gap-3"
+    >
+    </div>
+
+    <main class="flex-1 flex flex-col md:flex-row relative">
+      <div class="container mx-auto flex py-4 space-x-4">
+        <button
+          id="toggleSidebar"
+          class="md:hidden rounded flex justify-center items-center bg-blue-500 text-white p-2 h-[30px] w-[30px] hover:bg-blue-600 transition ease-in-out fixed top-12 left-0 z-50"
+        >
+          <i
+            class="fa-solid fa-bars text-xl xd:hidden cursor-pointer transition-transform duration-300"
+          ></i>
+        </button>
+        <aside
+          id="sidebar"
+          class="fixed inset-y-0 left-[-20px] transform -translate-x-full md:translate-x-0 md:relative md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-white shadow-md p-4 rounded-lg z-40"
+        >
+          <h2 class="text-lg font-semibold text-gray-800 mb-4">
+            Utilisateurs en ligne
+          </h2>
+          <ul
+            class="space-y-3 xd:max-h-[50vh] xs:h-[100vh] overflow-y-auto"
+            id="onlineUsersList"
+          >
+          </ul>
+        </aside>
+
+        <div class="flex-1 bg-gray-100 xd:p-6 xs:p-2 rounded-lg shadow-md">
+
+          <div
+            class="bg-white xd:p-6 xs:p-2 rounded-lg shadow-lg w-full mx-auto"
+          >
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">
+              Créer un Challenge
+            </h2>
+            <form>
+              <div class="mb-4">
+                <label
+                  for="challengeName"
+                  class="block text-gray-700 font-medium xs:text-sm"
+                >
+                  Nom du Challenge:
+                </label>
+                <input
+                  type="text"
+                  id="username"
+                  name="challengeName"
+                  class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 xs:text-sm"
+                  placeholder="Entrez le nom du challenge"
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="challengeId"
+                  class="block text-gray-700 font-medium"
+                >
+                  ID du Challenge:
+                </label>
+                <input
+                  type="text"
+                  id="id"
+                  name="challengeId"
+                  class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 xs:text-sm"
+                  placeholder="Entrez l'ID du challenge"
+                />
+              </div>
+              <button
+                type="submit"
+                id="submit"
+                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out w-full"
+              >
+                Créer
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // JavaScript to toggle sidebar visibility in mobile view
+      document
+        .getElementById("toggleSidebar")
+        .addEventListener("click", function () {
+          console.log("ddd");
+
+          var sidebar = document.getElementById("sidebar");
+          sidebar.classList.toggle("-translate-x-full");
+
+          document
+            .getElementById("toggleSidebar")
+            .classList.toggle("translate-x-[210px]");
+        });
+    </script>
+
+    <div>
+      <button id="submit-room"></button>
+
+      <button id="submit-mssss"></button>
+    </div>
+
+    <div class="container mx-auto">
+      <div
+        id="game-status"
+        class="bg-blue-100 p-4 rounded-lg shadow-md text-center mb-4"
+      >
+        <h2 class="text-lg font-semibold text-blue-700 mb-2">
+          Tour du joueur :
+        </h2>
+        <span id="current-player" class="text-xl font-bold text-blue-800">
+        </span>
+      </div>
+
+      <div
+        class="bg-gray-100 py-2 h-full mx-auto flex flex-col gap-9 items-center"
+      >
+        <div
+          class="joures bg-white p-4 rounded-lg shadow-md max-w-xs mx-auto sm:max-w-sm"
+        >
+          <div class="flex items-center justify-between gap-3">
+
+            <div class="flex gap-3 items-center">
+              <img
+                src="https://via.placeholder.com/40"
+                alt="Joueur 1"
+                class="w-12 h-12 rounded-full border border-blue-500 mb-1"
+              />
+              <h3>X</h3>
+              <span class="text-sm font-medium text-blue-700" id="score-x"></span>
+            </div>
+
+            <div class="flex gap-3 items-center">
+              <img
+                src="https://via.placeholder.com/40"
+                alt="Joueur 2"
+                class="w-12 h-12 rounded-full border border-blue-500 mb-1"
+              />
+              <h3>O</h3>
+              <span class="text-sm font-medium text-blue-700" id="score-o"> </span>
+            </div>
+          </div>
+        </div>
+
+        <div id="game-board"></div>
+      </div>
+
+      <!-- <div id="scoreboard">
+        <p>
+          Score : Joueur X - <span id="score-x">0</span> | Joueur O -
+          <span id="score-o">0</span>
+        </p>
+      </div> -->
+    </div>
+
+    <footer class="bg-sky-900 text-white py-4 shadow-inner">
+      <div class="container mx-auto text-center">
+        <p>&copy; 2024 MediaGame. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            screens: {
+              xs: { max: "770px" },
+              xd: { min: "770px" },
+            },
+          },
+        },
+      };
+
+      const togelBar = document.getElementById("togel-bar");
+      const navMenu = document.getElementById("nav-menu");
+
+      togelBar.addEventListener("click", () => {
+        navMenu.classList.toggle("xs:hidden");
+        navMenu.classList.toggle("xs:translate-x-0");
+        navMenu.classList.toggle("xs:translate-x-full");
+        if (togelBar.classList.contains("fa-bars")) {
+          togelBar.classList.remove("fa-bars");
+          togelBar.classList.add("fa-xmark");
+        } else {
+          togelBar.classList.remove("fa-xmark");
+          togelBar.classList.add("fa-bars");
+        }
+      });
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+      const gameBoard = document.getElementById("game-board");
+      const reset = document.getElementById("reset-button");
+      const sequenceLength = 5;
+      const boardSize = 20;
+      const scor = {
+        x: 0,
+        o: 0,
+      };
+
+      let currentPlayer = "X";
+      const socket = io();
+      let idgame;
+
+      socket.on("connect", () => {
+        idgame = socket.id;
+        document.getElementById("idgame").textContent = `ID: ${idgame}`;
+        console.log("Connected with ID:", socket.id);
+      });
+
+      //
+      document.getElementById("submit-room").addEventListener("click", () => {
+        const nameRom = document.getElementById("rom").value;
+        socket.emit("join-room", nameRom);
+      });
+
+      socket.on("user-joined", (data) => {
+        console.log(data);
+      });
+
+      document.getElementById("submit-mssss").addEventListener("click", () => {
+        const message = document.getElementById("mmmms").value;
+        const roomName = document.getElementById("rom").value;
+        const data = {
+          roomName,
+          message,
+        };
+        socket.emit("send-messa", message);
+      });
+
+      socket.on("receive-mes", (message) => {
+        console.log("Received message:", message);
+      });
+
+      ///
+
+      // Handling the 'userOnline' event to update the online users list
+      socket.on("userOnline", (users) => {
+        const onlineUsersList = document.getElementById("onlineUsersList");
+        onlineUsersList.innerHTML = ""; // Clear the current list
+        console.log(users);
+
+        users.forEach((userId) => {
+          if (userId != idgame) {
+            onlineUsersList.innerHTML += `
+            <li class="flex items-center">
+              <img
+                src="https://via.placeholder.com/40"
+                alt="Utilisateur"
+                class="w-12 h-12 rounded-full mr-3 border-2 border-blue-500"
+              />
+              <span class="text-gray-900 text-sm">${userId}</span>
+          </li>
+            
+            `;
+          }
+        });
+      });
+
+      socket.on("disconnect", () => {
+        console.log("user this connections ");
+      });
+
+      document.getElementById("submit").addEventListener("click", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("username").value;
+        const id = document.getElementById("id").value;
+        if (username && id) {
+          // Emit an event to the server with the username and id
+          const data = {
+            challengeId: id,
+            challengerId: idgame,
+            challengerUsername: username,
+            isChallengeAccepted: false,
+            current: idgame,
+          };
+
+          console.log(data);
+          socket.emit("setUsername", data);
+        } else {
+          alert("Please enter both username and id.");
+        }
+      });
+
+      socket.on("newChallenge", (challenge) => {
+        const notification = document.getElementById("notification");
+
+        // Create a unique ID for each notification
+        const notificationId = `notification-${Date.now()}`;
+
+        notification.innerHTML += `
+              <div
+                id="${notificationId}"
+                class="bg-white shadow-lg rounded-lg pointer-events-auto flex flex-col items-end h-10vh p-2"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+              >
+                <div class="flex items-center w-full">
+                  <div class="flex-1 text-right pr-2">
+                    <div class="toast-body text-gray-700 text-xs font-semibold">
+                      You have been challenged by
+                      <span class="font-bold">${challenge.challengerUsername}</span>!
+                    </div>
+                  </div>
+                  <img
+                    src="https://via.placeholder.com/40"
+                    class="w-8 h-8 rounded-full object-cover"
+                    alt="Challenger's Image"
+                  />
+                </div>
+                <button
+                  type="button"
+                  class="bg-blue-500 text-white px-3 py-1 mt-1 rounded-lg hover:bg-blue-600 focus:outline-none text-xs"
+                  onclick="acceptChallenge('${notificationId}', '${challenge.challengerUsername}')"
+                >
+                  Accept
+                </button>
+              </div>
+            `;
+      });
+
+      function acceptChallenge(notificationId, challengerUsername) {
+        const notificationElement = document.getElementById(notificationId);
+        if (notificationElement) {
+          notificationElement.remove();
+        }
+
+        console.log("Sending start-game for id:", challengerUsername);
+        socket.emit("start-game", challengerUsername);
+      }
+
+      socket.on("commencer", (data) => {
+        console.log("Received commencer:", data);
+        const room = data.room;
+        let current = data.currentPlayer;
+        let challenger = data.challengr;
+
+        if (data.accepter === "accepter") {
+          document.getElementById("current-player").textContent = currentPlayer;
+          function createBoard(size) {
+            gameBoard.innerHTML = "";
+
+            const screenWidth = window.innerWidth;
+
+            const cellSize = screenWidth < 600 ? 20 : 15;
+
+            gameBoard.style.gridTemplateColumns = `repeat(${size}, ${cellSize}px)`;
+            gameBoard.style.gridTemplateRows = `repeat(${size}, ${cellSize}px)`;
+
+            for (let i = 0; i < size * size; i++) {
+              const cell = document.createElement("div");
+              cell.classList.add("cell");
+              cell.dataset.index = i;
+              cell.addEventListener("click", handleClick);
+              gameBoard.appendChild(cell);
+            }
+          }
+
+          createBoard(boardSize);
+
+          const cells = document.querySelectorAll(".cell");
+
+          function handleClick(event) {
+            const cell = event.target;
+            if (!cell.textContent) {
+              if (current != idgame) {
+                console.log(current);
+
+                const index = event.target.dataset.index;
+                let position;
+
+                const data = {
+                  index,
+                  room,
+                  challenger: idgame,
+                };
+
+                console.log("click");
+
+                socket.emit("getIndex", data);
+                socket.emit("getplyer", data);
+                socket.on("sendPlyer", (data) => {
+                  console.log("get player");
+
+                  console.log(data);
+                  current = data.currentPlayer;
+                });
+              } else {
+                console.log(current);
+
+                alert("not game mr");
+              }
+            }
+          }
+
+          socket.on("sendIndex", (data) => {
+            console.log(data);
+            current = data.currentPlayer;
+
+            console.log(current);
+
+            const symbol = document.querySelector(
+              `.cell[data-index="${data.index}"]`
+            );
+
+            console.log(symbol);
+
+            if (!symbol.textContent) {
+              symbol.textContent = currentPlayer;
+              symbol.classList.add(currentPlayer);
+              if (checkWin(symbol)) {
+                if (currentPlayer === "X") {
+                  scor.x = +1;
+                } else {
+                  scor.o = +1;
+                }
+                document.getElementById("score-x").textContent = scor.x;
+                document.getElementById("score-o").textContent = scor.o;
+                setTimeout(() => {
+                  cells.forEach((item) => {
+                    item.textContent = "";
+                    item.classList.remove("X");
+                    item.classList.remove("O");
+                  });
+                  alert(`Winner is ${currentPlayer}`);
+                }, 10);
+              }
+              currentPlayer = currentPlayer === "X" ? "O" : "X";
+
+              document.getElementById("current-player").textContent =
+                currentPlayer;
+            }
+          });
+
+          function checkWin(cell) {
+            const index = parseInt(cell.dataset.index);
+
+            return (
+              checkDirection(index, 1) || // Horizontal
+              checkDirection(index, boardSize) || // Vertical
+              checkDirection(index, boardSize + 1) || // Diagonal /
+              checkDirection(index, boardSize - 1)
+            ); // Diagonal \
+          }
+
+          function checkDirection(startIndex, step) {
+            const symbol = document.querySelector(
+              `.cell[data-index="${startIndex}"]`
+            ).textContent;
+            let count = 1;
+
+            // Check forward
+            for (
+              let i = startIndex + step;
+              isValidIndex(i, startIndex, step) && count < sequenceLength;
+              i += step
+            ) {
+              if (
+                document.querySelector(`.cell[data-index="${i}"]`)
+                  .textContent === symbol
+              ) {
+                count++;
+
+                console.log(` counter de forward = ${count}`);
+              } else {
+                break;
+              }
+            }
+
+            console.log(` counter = ${count}`);
+            // Check backward
+            for (
+              let i = startIndex - step;
+              isValidIndex(i, startIndex, step) && count < sequenceLength;
+              i -= step
+            ) {
+              if (
+                document.querySelector(`.cell[data-index="${i}"]`)
+                  .textContent === symbol
+              ) {
+                count++;
+                console.log(` counter de bacward = ${count}`);
+              } else {
+                break;
+              }
+            }
+
+            return count >= sequenceLength;
+          }
+
+          function isValidIndex(index, startIndex, step) {
+            if (index < 0 || index >= boardSize * boardSize) return false;
+
+            if (step === 1) {
+              return (
+                Math.floor(index / boardSize) ===
+                Math.floor(startIndex / boardSize)
+              );
+            } else if (step === boardSize) {
+              return true;
+            } else if (step === boardSize + 1) {
+              return (
+                Math.floor(index / boardSize) ===
+                Math.floor((index - step) / boardSize) + 1
+              );
+            } else if (step === boardSize - 1) {
+              return (
+                Math.floor(index / boardSize) ===
+                Math.floor((index - step) / boardSize) + 1
+              );
+            }
+
+            return false;
+          }
+
+          reset.addEventListener("click", resetGame);
+          function resetGame() {
+            scor.x = 0;
+            scor.o = 0;
+            document.getElementById("score-x").textContent = scor.x;
+            document.getElementById("score-o").textContent = scor.o;
+          }
+        }
+      });
+
+      socket.on("getMessager", (data) => {
+        document.getElementById("messager").innerHTML += ` <li> ${data}  </li>`;
+        console.log(data);
+      });
+
+      document
+        .getElementById("submit-message")
+        .addEventListener("click", () => {
+          let message = document.getElementById("message").value;
+
+          socket.emit("chatapp", message);
+
+          document.getElementById("message").value = "";
+        });
+    </script>
+  </body>
+</html>
